@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Business Growth Conference CMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .admin-header {
+            background: #4F46E5;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .admin-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .admin-layout {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background: white;
+            box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+            padding: 2rem 0;
+        }
+
+        .admin-nav {
+            list-style: none;
+        }
+
+        .admin-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-nav a {
+            display: block;
+            padding: 0.75rem 2rem;
+            text-decoration: none;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .admin-nav a:hover,
+        .admin-nav a.active {
+            background: #4F46E5;
+            color: white;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4F46E5;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .action-card h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #4F46E5;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3730A3;
+        }
+
+        .recent-activity {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+        }
+
+        .recent-activity h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .activity-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-time {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .welcome-banner h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .admin-layout {
+                flex-direction: column;
+            }
+            
+            .admin-sidebar {
+                width: 100%;
+                padding: 1rem 0;
+            }
+            
+            .admin-nav {
+                display: flex;
+                overflow-x: auto;
+                padding: 0 1rem;
+            }
+            
+            .admin-nav li {
+                margin-bottom: 0;
+                margin-right: 0.5rem;
+            }
+            
+            .admin-nav a {
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <h1>🏃‍♂️ Business Growth Conference CMS</h1>
+    </div>
+
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <nav>
+                <ul class="admin-nav">
+                    <li><a href="/admin" class="active">📊 Dashboard</a></li>
+                    <li><a href="/admin/event">📅 Event Details</a></li>
+                    <li><a href="/admin/pricing">💰 Pricing</a></li>
+                    <li><a href="/admin/testimonials">⭐ Testimonials</a></li>
+                    <li><a href="/admin/coaches">👥 Coaches</a></li>
+                    <li><a href="/admin/features">🎯 Features</a></li>
+                    <li><a href="/admin/settings">⚙️ Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            <div class="welcome-banner">
+                <h2>Welcome to Your CMS Dashboard</h2>
+                <p>Manage your Business Growth Conference 2025 funnel landing page</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-registrations">0</div>
+                    <div class="stat-label">Total Registrations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="seats-available">20</div>
+                    <div class="stat-label">VIP Seats Available</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="testimonials-count">0</div>
+                    <div class="stat-label">Testimonials</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="coaches-count">0</div>
+                    <div class="stat-label">Coaches</div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <div class="action-card">
+                    <h3>📅 Event Details</h3>
+                    <p>Update event information, date, and location</p>
+                    <br>
+                    <a href="/admin/event" class="btn btn-primary">Manage Event</a>
+                </div>
+                <div class="action-card">
+                    <h3>💰 Pricing</h3>
+                    <p>Manage ticket prices and package details</p>
+                    <br>
+                    <a href="/admin/pricing" class="btn btn-primary">Manage Pricing</a>
+                </div>
+                <div class="action-card">
+                    <h3>⭐ Testimonials</h3>
+                    <p>Add and manage customer testimonials</p>
+                    <br>
+                    <a href="/admin/testimonials" class="btn btn-primary">Manage Testimonials</a>
+                </div>
+                <div class="action-card">
+                    <h3>👥 Coaches</h3>
+                    <p>Manage speaker profiles and information</p>
+                    <br>
+                    <a href="/admin/coaches" class="btn btn-primary">Manage Coaches</a>
+                </div>
+            </div>
+
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                <div class="activity-item">
+                    <div><strong>System initialized</strong></div>
+                    <div class="activity-time">Just now</div>
+                </div>
+                <div class="activity-item">
+                    <div><strong>CMS ready for configuration</strong></div>
+                    <div class="activity-time">Ready to start managing your funnel</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Load dashboard statistics
+        async function loadDashboardStats() {
+            try {
+                // Load testimonials count
+                const testimonials = await fetch('/api/testimonials');
+                const testimonialsData = await testimonials.json();
+                document.getElementById('testimonials-count').textContent = testimonialsData.length;
+
+                // Load coaches count
+                const coaches = await fetch('/api/coaches');
+                const coachesData = await coaches.json();
+                document.getElementById('coaches-count').textContent = coachesData.length;
+
+                // Load settings
+                const settings = await fetch('/api/settings');
+                const settingsData = await settings.json();
+                const seatsAvailable = settingsData.find(s => s.setting_key === 'seats_available');
+                if (seatsAvailable) {
+                    document.getElementById('seats-available').textContent = seatsAvailable.setting_value;
+                }
+
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+
+        // Load stats when page loads
+        document.addEventListener('DOMContentLoaded', loadDashboardStats);
+
+        // Simulate some activity for demonstration
+        function addRecentActivity(activity) {
+            const activityContainer = document.querySelector('.recent-activity');
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
+            activityItem.innerHTML = `
+                <div><strong>${activity}</strong></div>
+                <div class="activity-time">${new Date().toLocaleTimeString()}</div>
+            `;
+            activityContainer.appendChild(activityItem);
+        }
+    </script>
+</body>
+</html>

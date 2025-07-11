@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials - Business Growth Conference CMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .admin-header {
+            background: #4F46E5;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .admin-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .admin-layout {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background: white;
+            box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+            padding: 2rem 0;
+        }
+
+        .admin-nav {
+            list-style: none;
+        }
+
+        .admin-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-nav a {
+            display: block;
+            padding: 0.75rem 2rem;
+            text-decoration: none;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .admin-nav a:hover,
+        .admin-nav a.active {
+            background: #4F46E5;
+            color: white;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #4F46E5;
+            color: white;
+        }
+
+        .btn-success {
+            background: #059669;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #DC2626;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .actions .btn {
+            padding: 0.5rem 1rem;
+            font-size: 12px;
+        }
+
+        .testimonial-preview {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #f9f9f9;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 0.5rem;
+        }
+
+        .stars {
+            color: #FFD700;
+            font-size: 18px;
+            margin-bottom: 0.5rem;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            color: #666;
+        }
+
+        .image-upload {
+            margin-bottom: 1rem;
+        }
+
+        .image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .admin-layout {
+                flex-direction: column;
+            }
+            
+            .admin-sidebar {
+                width: 100%;
+                padding: 1rem 0;
+            }
+            
+            .admin-nav {
+                display: flex;
+                overflow-x: auto;
+                padding: 0 1rem;
+            }
+            
+            .admin-nav li {
+                margin-bottom: 0;
+                margin-right: 0.5rem;
+            }
+            
+            .admin-nav a {
+                white-space: nowrap;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <h1>🏃‍♂️ Business Growth Conference CMS</h1>
+    </div>
+
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <nav>
+                <ul class="admin-nav">
+                    <li><a href="/admin">📊 Dashboard</a></li>
+                    <li><a href="/admin/event">📅 Event Details</a></li>
+                    <li><a href="/admin/pricing">💰 Pricing</a></li>
+                    <li><a href="/admin/testimonials" class="active">⭐ Testimonials</a></li>
+                    <li><a href="/admin/coaches">👥 Coaches</a></li>
+                    <li><a href="/admin/features">🎯 Features</a></li>
+                    <li><a href="/admin/settings">⚙️ Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            <div class="page-header">
+                <div>
+                    <h2>Testimonials</h2>
+                    <p>Manage customer testimonials and reviews</p>
+                </div>
+                <button class="btn btn-success" onclick="openAddModal()">Add New Testimonial</button>
+            </div>
+
+            <div class="card">
+                <h3>Current Testimonials</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Rating</th>
+                            <th>Content</th>
+                            <th>Active</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% testimonials.forEach(testimonial => { %>
+                            <tr>
+                                <td><%= testimonial.name %></td>
+                                <td><%= testimonial.company %></td>
+                                <td>
+                                    <% for (let i = 0; i < testimonial.rating; i++) { %>⭐<% } %>
+                                </td>
+                                <td><%= testimonial.content ? testimonial.content.substring(0, 50) + '...' : 'No content' %></td>
+                                <td><%= testimonial.is_active ? 'Yes' : 'No' %></td>
+                                <td>
+                                    <div class="actions">
+                                        <button class="btn btn-primary" onclick="editTestimonial(<%= testimonial.id %>)">Edit</button>
+                                        <button class="btn btn-danger" onclick="deleteTestimonial(<%= testimonial.id %>)">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>Testimonials Preview</h3>
+                <div id="testimonials-preview">
+                    <% 
+                    for (let i = 0; i < testimonials.length; i++) {
+                        const testimonial = testimonials[i];
+                        if (testimonial.is_active) {
+                    %>
+                        <div class="testimonial-preview">
+                            <% if (testimonial.image) { %>
+                                <img src="/uploads/<%= testimonial.image %>" alt="<%= testimonial.name %>" class="testimonial-avatar">
+                            <% } %>
+                            <div class="stars">
+                                <% for (let j = 0; j < testimonial.rating; j++) { %>⭐<% } %>
+                            </div>
+                            <div class="testimonial-author"><%= testimonial.name %><% if (testimonial.company) { %>, <%= testimonial.company %><% } %></div>
+                            <div class="testimonial-content">"<%= testimonial.content %>"</div>
+                        </div>
+                    <% 
+                        }
+                    }
+                    %>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="testimonial-modal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 id="modal-title">Add Testimonial</h3>
+                <button onclick="closeModal()" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
+            </div>
+            
+            <form id="testimonial-form">
+                <input type="hidden" id="testimonial-id" name="id">
+                
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" id="testimonial-name" name="name" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" id="testimonial-title" name="title" class="form-input" placeholder="Job Title">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Company</label>
+                    <input type="text" id="testimonial-company" name="company" class="form-input" placeholder="Company Name">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Content</label>
+                    <textarea id="testimonial-content" name="content" class="form-textarea" rows="4" required placeholder="The testimonial content..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Rating</label>
+                    <select id="testimonial-rating" name="rating" class="form-select">
+                        <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+                        <option value="4">⭐⭐⭐⭐ (4 stars)</option>
+                        <option value="3">⭐⭐⭐ (3 stars)</option>
+                        <option value="2">⭐⭐ (2 stars)</option>
+                        <option value="1">⭐ (1 star)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Profile Image</label>
+                    <input type="file" id="testimonial-image" name="image" class="form-input" accept="image/*" onchange="previewImage(this, 'image-preview')">
+                    <img id="image-preview" class="image-preview" style="display: none;">
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="testimonial-active" name="is_active" value="1" checked>
+                        <label for="testimonial-active">Active (show on website)</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Sort Order</label>
+                    <input type="number" id="testimonial-sort" name="sort_order" class="form-input" min="0" value="0">
+                </div>
+                
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let editingTestimonialId = null;
+
+        function openAddModal() {
+            editingTestimonialId = null;
+            document.getElementById('modal-title').textContent = 'Add Testimonial';
+            document.getElementById('testimonial-form').reset();
+            document.getElementById('testimonial-id').value = '';
+            document.getElementById('testimonial-active').checked = true;
+            document.getElementById('image-preview').style.display = 'none';
+            document.getElementById('testimonial-modal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('testimonial-modal').classList.remove('show');
+            editingTestimonialId = null;
+        }
+
+        async function editTestimonial(id) {
+            try {
+                const response = await fetch('/api/testimonials');
+                const testimonials = await response.json();
+                const testimonial = testimonials.find(t => t.id === id);
+                
+                if (testimonial) {
+                    editingTestimonialId = id;
+                    document.getElementById('modal-title').textContent = 'Edit Testimonial';
+                    document.getElementById('testimonial-id').value = testimonial.id;
+                    document.getElementById('testimonial-name').value = testimonial.name;
+                    document.getElementById('testimonial-title').value = testimonial.title || '';
+                    document.getElementById('testimonial-company').value = testimonial.company || '';
+                    document.getElementById('testimonial-content').value = testimonial.content || '';
+                    document.getElementById('testimonial-rating').value = testimonial.rating || 5;
+                    document.getElementById('testimonial-active').checked = testimonial.is_active;
+                    document.getElementById('testimonial-sort').value = testimonial.sort_order || 0;
+                    
+                    if (testimonial.image) {
+                        document.getElementById('image-preview').src = `/uploads/${testimonial.image}`;
+                        document.getElementById('image-preview').style.display = 'block';
+                    } else {
+                        document.getElementById('image-preview').style.display = 'none';
+                    }
+                    
+                    document.getElementById('testimonial-modal').classList.add('show');
+                }
+            } catch (error) {
+                console.error('Error loading testimonial:', error);
+            }
+        }
+
+        async function deleteTestimonial(id) {
+            if (confirm('Are you sure you want to delete this testimonial?')) {
+                try {
+                    const response = await fetch(`/api/testimonials/${id}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert('Error deleting testimonial');
+                    }
+                } catch (error) {
+                    console.error('Error deleting testimonial:', error);
+                    alert('Error deleting testimonial');
+                }
+            }
+        }
+
+        function previewImage(input, previewId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById(previewId);
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.getElementById('testimonial-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Convert checkbox to boolean
+            data.is_active = data.is_active ? 1 : 0;
+            
+            try {
+                // Handle image upload first if there's an image
+                if (formData.get('image').size > 0) {
+                    const imageFormData = new FormData();
+                    imageFormData.append('image', formData.get('image'));
+                    
+                    const imageResponse = await fetch('/api/upload', {
+                        method: 'POST',
+                        body: imageFormData
+                    });
+                    
+                    if (imageResponse.ok) {
+                        const imageData = await imageResponse.json();
+                        data.image = imageData.filename;
+                    }
+                }
+                
+                let response;
+                if (editingTestimonialId) {
+                    response = await fetch(`/api/testimonials/${editingTestimonialId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    response = await fetch('/api/testimonials', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+                }
+                
+                if (response.ok) {
+                    closeModal();
+                    location.reload();
+                } else {
+                    alert('Error saving testimonial');
+                }
+            } catch (error) {
+                console.error('Error saving testimonial:', error);
+                alert('Error saving testimonial');
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('testimonial-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
